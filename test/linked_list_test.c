@@ -47,17 +47,13 @@ void run_linked_list_tests() {
   assert("Peeking returns the third item",           ll_peek(ll)==inputs[2]);
 
   // iterating through the items
-  LinkedList_Iterator *iterator;
-  int index = num_inputs;
-  for(iterator = ll_i_new(ll); !ll_i_is_empty(iterator); ll_i_iterate(iterator)) {
-    char test_message[50];
-    sprintf(test_message, "It iterates through the list %d", index);
-    assert(test_message, inputs[--index] == ll_i_get(iterator));
-  }
-  assert("It iterated the correct number of times", index==0);
-  ll_i_free(iterator);
-
-
+  int index     = num_inputs;
+  int all_match = 1;
+  ll_each(ll, char* input, ({
+    all_match &= (inputs[--index] == input);
+  }));
+  assert("It iterates the correct number of times", index==0);
+  assert("The item provided matched each time",     all_match);
 
   // popping an item
   data = ll_pop(ll);

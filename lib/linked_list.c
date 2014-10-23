@@ -51,6 +51,16 @@ void ll_i_free(LinkedList_Iterator* iterator) {
   free(iterator);
 }
 
+#define ll_each(ll, var_declaration, body)               \
+  ({LinkedList_Iterator * iterator_qB2rO = ll_i_new(ll); \
+    while(!ll_i_is_empty(iterator_qB2rO)) {              \
+      var_declaration = ll_i_get(iterator_qB2rO);        \
+      ll_i_iterate(iterator_qB2rO);                      \
+      body;                                              \
+    };                                                   \
+    ll_i_free(iterator_qB2rO);                           \
+  })
+
 
 // ----- /iterator
 
