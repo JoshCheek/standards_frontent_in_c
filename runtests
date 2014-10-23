@@ -1,0 +1,2 @@
+#!/bin/sh
+clang test/runner.c -I lib && ./a.out
