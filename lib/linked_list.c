@@ -24,6 +24,36 @@ void* ll_peek(LinkedList* ll);
 // apparently fibers can do this: https://en.wikipedia.org/wiki/Setcontext
 // there's also libs like:        https://github.com/stevedekorte/coroutine/blob/master/samples/twoCoroTest.c
 
+// ----- iterator
+typedef struct {
+  Node* current_node;
+} LinkedList_Iterator;
+
+LinkedList_Iterator* ll_i_new(LinkedList* ll) {
+  LinkedList_Iterator* lli = (LinkedList_Iterator*)malloc(sizeof(LinkedList_Iterator));
+  lli->current_node = ll->head;
+  return lli;
+}
+
+int ll_i_is_empty(LinkedList_Iterator* iterator) {
+  return !iterator->current_node;
+}
+
+void ll_i_iterate(LinkedList_Iterator* iterator) {
+  iterator->current_node = iterator->current_node->successor;
+}
+
+void* ll_i_get(LinkedList_Iterator* iterator) {
+  return iterator->current_node->data;
+}
+
+void ll_i_free(LinkedList_Iterator* iterator) {
+  free(iterator);
+}
+
+
+// ----- /iterator
+
 LinkedList* ll_new() {
   LinkedList* ll = (LinkedList*)malloc(sizeof(LinkedList));
   ll->head       = NULL;

@@ -19,6 +19,7 @@ void run_linked_list_tests() {
     "item2",
     "item3",
   };
+  int   num_inputs = sizeof(inputs) / sizeof(char*);
   char* data;
 
   // after init
@@ -45,12 +46,16 @@ void run_linked_list_tests() {
   assert("Has size of 3 after pushing a third item", ll_size(ll)==3);
   assert("Peeking returns the third item",           ll_peek(ll)==inputs[2]);
 
-  // // iterating through the items
-  // LinkedList_Iterator* iterator;
-  // for(iterator = ll_i_make(ll); ll_i_alive(iterator); ll_i_iterate) {
-  //   char* msg = ll_i_get(iterator);
-  //   printf("Message is: %s\n", msg);
-  // }
+  // iterating through the items
+  LinkedList_Iterator *iterator;
+  int index = num_inputs;
+  for(iterator = ll_i_new(ll); !ll_i_is_empty(iterator); ll_i_iterate(iterator)) {
+    char test_message[50];
+    sprintf(test_message, "It iterates through the list %d", index);
+    assert(test_message, inputs[--index] == ll_i_get(iterator));
+  }
+  assert("It iterated the correct number of times", index==0);
+  ll_i_free(iterator);
 
 
 
